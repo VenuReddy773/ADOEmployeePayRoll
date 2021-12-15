@@ -48,5 +48,50 @@ namespace AODEmployeePayRoll
                 return false;
             }
         }
+        public List<Employee> EmpList = new List<Employee>();
+        public List<Employee> GetAllEmployees()
+        {
+            connection();
+
+            SqlCommand com = new SqlCommand("GetPayRoleService", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataTable dt = new DataTable();
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+            //Bind EmpModel generic list using dataRow     
+            foreach (DataRow dr in dt.Rows)
+            {
+                EmpList.Add(
+                    new Employee
+                    {
+
+                        emp_id = Convert.ToInt32(dr["emp_id"]),
+                        Emp_name = Convert.ToString(dr["Emp_name"]),
+                        salary = Convert.ToDouble(dr["salary"]),
+                        start = Convert.ToDateTime(dr["start"]),
+                        BasicPay = Convert.ToDouble(dr["BasicPay"]),
+                        Deductions = Convert.ToDouble(dr["Deductions"]),
+                        TaxablePay = Convert.ToDouble(dr["TaxablePay"]),
+                        IncomeTax = Convert.ToDouble(dr["IncomeTax"]),
+                        NetPay = Convert.ToDouble(dr["NetPay"]),
+                        gender = Convert.ToChar(dr["gender"]),
+                        EmployeePhone = Convert.ToString(dr["EmployeePhone"]),
+                        EmployeeAddress = Convert.ToString(dr["EmployeeAddress"]),
+                        EmployeeDepartment = Convert.ToString(dr["EmployeeDepartment"])
+                    }
+                    );
+            }
+            return EmpList;
+        }
+        public void Display()
+        {
+            foreach (var item in EmpList)
+            {
+                Console.WriteLine("\nName\tsalary\tstartDate\t\tEmplyeePhone\tEmployeeDept\n");
+                Console.WriteLine(item.Emp_name + "\t" + item.salary + "\t" + item.start + "\t" + item.EmployeePhone + "\t" + item.EmployeeDepartment);
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace AODEmployeePayRoll
         {
             Console.WriteLine("Welcome!!");
             Operations pay = new Operations();
-
-        }
+            pay.GetAllEmployees();
+            pay.Display();        }
     }
 }
